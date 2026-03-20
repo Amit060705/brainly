@@ -1,7 +1,7 @@
 import mongoose, { model,Schema } from "mongoose";
+import {mongoUrl} from "./config.js";
 // create user models and schema
-// mongodb+srv://amitkumar060705_db_user:mdYpQRX5fUYKri53@cluster0.vgnuusl.mongodb.net/
-mongoose.connect("mongodb+srv://amitkumar060705_db_user:mdYpQRX5fUYKri53@cluster0.vgnuusl.mongodb.net/brainly");
+mongoose.connect(mongoUrl+"brainly");
 const UserSchema=new Schema({
     username:{type:String,unique:true},
     password:String
