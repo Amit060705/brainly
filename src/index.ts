@@ -79,8 +79,8 @@ app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
             userId: req.userId,
             hash
         })
-        return res.status(202).json({
-            message: "/share/" + hash
+        return res.status(201).json({
+            hash,
         })
     }
     else {
