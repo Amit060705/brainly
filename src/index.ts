@@ -1,4 +1,4 @@
-import express from "express";
+import express,{Request,Response} from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { ContentModel, LinkModel, UserModel } from "./db.js";
@@ -9,7 +9,7 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.post("/api/v1/signup", async (req, res) => {
+app.post("/api/v1/signup", async (req:Request, res:Response) => {
     //zod validation,hash the password
     const { username, password } = req.body;
     try {
@@ -19,7 +19,7 @@ app.post("/api/v1/signup", async (req, res) => {
         return res.status(411).json({ message: "user already exists" });
     }
 })
-app.post("/api/v1/signin", async (req, res) => {
+app.post("/api/v1/signin", async (req:Request, res:Response) => {
     const { username, password } = req.body;
     const existingUser = await UserModel.findOne({
         username,
@@ -35,7 +35,7 @@ app.post("/api/v1/signin", async (req, res) => {
         return res.status(403).json({ message: "invalid credentials" });
     }
 })
-app.post("/api/v1/content", userMiddleware, async (req, res) => {
+app.post("/api/v1/content", userMiddleware, async (req:Request, res:Response) => {
     const { link, type, title } = req.body;
     await ContentModel.create({
         link,
@@ -46,14 +46,14 @@ app.post("/api/v1/content", userMiddleware, async (req, res) => {
     })
     return res.status(200).json({ message: "content created successfully" });
 })
-app.get("/api/v1/content", userMiddleware, async (req, res) => {
+app.get("/api/v1/content", userMiddleware, async (req:Request, res:Response) => {
     const userId = req.userId;
     const content = await ContentModel.find({
         userId
     }).populate("userId", "username");
     return res.status(200).json({ content });
 })
-app.delete("/api/v1/content", userMiddleware, async (req, res) => {
+app.delete("/api/v1/content", userMiddleware, async (req:Request, res:Response) => {
     const { contentId } = req.body;
     await ContentModel.deleteOne({
         _id: new mongoose.Types.ObjectId(contentId),
@@ -63,7 +63,7 @@ app.delete("/api/v1/content", userMiddleware, async (req, res) => {
         message: "Deleted successfully"
     });
 });
-app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
+app.post("/api/v1/brain/share", userMiddleware, async (req:Request, res:Response) => {
     const { share } = req.body;
     if (share) {
         const existingLink = await LinkModel.findOne({
