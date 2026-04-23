@@ -9,6 +9,9 @@ import cors from "cors";
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.get("/", (req: Request, res: Response) => {
+    return res.status(200).json({ message: "Server is running" });
+})
 app.post("/api/v1/signup", async (req:Request, res:Response) => {
     //zod validation,hash the password
     const { username, password } = req.body;
